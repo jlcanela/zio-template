@@ -11,7 +11,7 @@ object InitDB extends Accessible[InitDB]:
   val run = this.apply(_.run)
   val live = InitDBImpl.apply.toLayer
 
-case class InitDBImpl(quill: Quill) extends InitDB:
+case class InitDBImpl(ctx: ConfigService.QuillContext) extends InitDB:
 
   val ddl = Array(
     """DROP TABLE IF EXISTS Person;""",
@@ -26,9 +26,7 @@ case class InitDBImpl(quill: Quill) extends InitDB:
         VALUES (1, 'Joe', 'Smith', 23);"""
   )
 
-  def managedConnection = (for {
-    ctx <- quill.ctx
-  } yield ctx.dataSource.getConnection).toManaged
+  def managedConnection = ZManaged.succeed(ctx.dataSource.getConnection)
 
   def managedStatement = managedConnection.use { cn => ZIO.succeed(cn.createStatement) }.toManaged
 
