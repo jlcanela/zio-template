@@ -5,10 +5,17 @@ object ziotemplate extends ScalaModule {
   def scalaVersion = "3.1.0"
 
   def ivyDeps = Agg(
-    ivy"dev.zio::zio::${zioVersion}"
+    ivy"dev.zio::zio::${zioVersion}",
+    ivy"io.getquill::quill-jdbc-zio:3.7.2.Beta1.4",
+    ivy"org.slf4j:slf4j-simple:1.7.32",
+    ivy"org.postgresql:postgresql:42.2.18",
   )
 
-  // override def mainClass = Some("MyApp")
+  def forkArgs = Seq("-Xmx4g")
+
+  def forkEnv = Map("DB_USER" -> "myuser")
+
+  override def mainClass = Some("QuillSampleApp")
 
   /*
   object test extends Tests {
