@@ -11,14 +11,16 @@ trait Quill:
 object Quill extends Accessible[Quill] :
   
   def ctx = this.apply(_.ctx) 
-  val live: ULayer[Quill] = ZLayer.succeed(QuillPostgres())
+  val live: ULayer[Quill] = ZLayer.succeed { 
+    val config = ConfigFactory.load("application.properties").getConfig("ctx")
+    .withFallback(ConfigFactory.parseFile(new File(".env")))
 
-  
-case class QuillPostgres() extends Quill:
-    
-  def ctx = ZIO.succeed {
-    val config = ConfigFactory.load("application.properties").getConfig("ctx").withFallback(ConfigFactory.parseFile(new File(".env")))
     // SnakeCase turns firstName -> first_name
-    new PostgresJdbcContext(SnakeCase, config)
-  }
+    val context: PostgresJdbcContext[SnakeCase] = new PostgresJdbcContext(SnakeCase, config)
+    QuillPostgres(context)
+  } 
+
+case class QuillPostgres(context: PostgresJdbcContext[SnakeCase]) extends Quill:
+    
+  def ctx = ZIO.succeed(context)
 
