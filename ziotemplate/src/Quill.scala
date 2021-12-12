@@ -10,7 +10,7 @@ trait Quill:
 object Quill extends Accessible[Quill] :
   
   def ctx = this.apply(_.ctx) 
-  val live = ZLayer.succeed(QuillPostgres())
+  val live: ULayer[Quill] = ZLayer.succeed(QuillPostgres())
 
   
 case class QuillPostgres() extends Quill:
