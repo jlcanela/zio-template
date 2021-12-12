@@ -11,11 +11,8 @@ object ziotemplate extends ScalaModule {
     ivy"org.postgresql:postgresql:42.2.18",
   )
 
-  def forkArgs = Seq("-Xmx4g")
-
-  def forkEnv = Map("DB_USER" -> "myuser")
-
-  override def mainClass = Some("QuillSampleApp")
+  val a = 1
+  override def mainClass = Some("ZIOTemplate")
 
   /*
   object test extends Tests {
