@@ -1,5 +1,5 @@
 import zio.*
-import io.getquill._
+import io.getquill.*
 
 trait Persons:
   def findPeople: IO[Nothing, List[Persons.Person]]

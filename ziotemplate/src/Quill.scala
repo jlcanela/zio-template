@@ -1,5 +1,6 @@
 import zio.*
-import io.getquill._
+import io.getquill.*
+
 import com.typesafe.config.ConfigFactory
 import java.io.File
 
