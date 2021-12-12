@@ -1,12 +1,12 @@
 import java.sql.Statement
 import java.sql.Connection
 
-object InitDB {
+object InitDB:
 
   val ddl = Array(
-    """DROP TABLE Company;""",
-    """DROP TABLE Address;""",
-    """DROP TABLE Person;""",
+    """DROP TABLE IF EXISTS Company;""",
+    """DROP TABLE IF EXISTS Address;""",
+    """DROP TABLE IF EXISTS Person;""",
     """CREATE TABLE IF NOT EXISTS Person(
           id INT NOT NULL PRIMARY KEY, 
           first_name VARCHAR(255),
@@ -28,11 +28,11 @@ object InitDB {
         VALUES (1, 'Joe', 'Smith', 23);"""
   )
 
-  def run(cn: Connection) = {
+  def run(cn: Connection) =
     val st = cn.createStatement
     ddl.foreach { sql =>
       st.execute(sql)
     }
     st.close
-  }
-}
+  
+
